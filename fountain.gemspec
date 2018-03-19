@@ -9,12 +9,12 @@ Gem::Specification.new do |spec|
   spec.authors       = %w[abrom]
   spec.email         = %w[a.bromwich@gmail.com]
 
-  spec.summary       = 'Fountain REST API v2 for Ruby'
-  spec.description   = 'Fountain REST API v2 for Ruby'
+  spec.summary       = 'Fountain REST API v2 wrapper for Ruby'
+  spec.description   = 'Fountain REST API v2 wrapper for Ruby'
   spec.homepage      = 'https://github.com/Studiosity/fountain-ruby'
   spec.license       = 'MIT'
 
-  spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features|docs)/}) }
+  spec.files         = ['lib/fountain.rb']
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
