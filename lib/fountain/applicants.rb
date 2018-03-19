@@ -31,7 +31,7 @@ module Fountain
 
     def inspect
       format(
-        '#<%<class_name>s:0x%<object_id>p @id="%<id>s" @count="%<count>s">',
+        '#<%<class_name>s:0x%<object_id>p @count="%<count>s">',
         class_name: self.class.name,
         object_id: object_id,
         count: count
