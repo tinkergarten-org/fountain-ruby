@@ -28,5 +28,14 @@ module Fountain
       end
       @applicants = raw_data['applicants'].map { |attr| Applicant.new attr }
     end
+
+    def inspect
+      format(
+        '#<%<class_name>s:0x%<object_id>p @id="%<id>s" @count="%<count>s">',
+        class_name: self.class.name,
+        object_id: object_id,
+        count: count
+      )
+    end
   end
 end
