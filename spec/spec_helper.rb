@@ -3,6 +3,7 @@ SimpleCov.start
 
 $LOAD_PATH.unshift File.expand_path('../lib', __dir__)
 require 'fountain'
+require 'support/delegate_method_matcher'
 
 RSpec.configure do |config|
   config.order = 'random'

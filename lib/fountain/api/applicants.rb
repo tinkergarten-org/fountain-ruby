@@ -23,7 +23,7 @@ module Fountain
             :funnel_id, :stage_id, :stage, :labels, :cursor
           )
         )
-        response['applicants'].map { |hash| Fountain::Applicant.new hash }
+        Fountain::Applicants.new response
       end
 
       #

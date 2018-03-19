@@ -17,6 +17,7 @@ module Fountain
 end
 
 require 'fountain/applicant'
+require 'fountain/applicants'
 require 'fountain/background_check'
 require 'fountain/document_signature'
 require 'fountain/funnel'

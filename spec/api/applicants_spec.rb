@@ -24,13 +24,25 @@ describe Fountain::Api::Applicants do
       # Stubs for /v2/applicants REST API
       stub_authed_request(:get, '/v2/applicants')
         .to_return(
-          body: { applicants: [applicant1, applicant2] }.to_json,
+          body: {
+            applicants: [applicant1, applicant2],
+            pagination: {
+              current_cursor: 'cursor1',
+              next_cursor: 'cursor2'
+            }
+          }.to_json,
           status: 200
         )
 
       stub_authed_request(:get, '/v2/applicants?funnel_id=1234&stage_id=4567&stage=Foo')
         .to_return(
-          body: { applicants: [applicant2] }.to_json,
+          body: {
+            applicants: [applicant2],
+            pagination: {
+              current_cursor: 'cursor3',
+              next_cursor: 'cursor4'
+            }
+          }.to_json,
           status: 200
         )
 
@@ -43,20 +55,35 @@ describe Fountain::Api::Applicants do
 
     it 'returns all applicants when passed no parameters' do
       applicants = Fountain::Api::Applicants.new.list
-      expect(applicants.map(&:class)).to eq [Fountain::Applicant, Fountain::Applicant]
+      expect(applicants).to be_an Fountain::Applicants
+
+      expect(applicants.count).to eq 2
       expect(applicants.map(&:name)).to eq %w[Richard Frank]
+
+      expect(applicants.current_cursor).to eq 'cursor1'
+      expect(applicants.next_cursor).to eq 'cursor2'
     end
 
     it 'passes through arguments' do
       applicants = Fountain::Api::Applicants.new.list funnel_id: 1234, stage_id: 4567, stage: 'Foo'
-      expect(applicants.map(&:class)).to eq [Fountain::Applicant]
+      expect(applicants).to be_an Fountain::Applicants
+
+      expect(applicants.count).to eq 1
       expect(applicants.map(&:name)).to eq ['Frank']
+
+      expect(applicants.current_cursor).to eq 'cursor3'
+      expect(applicants.next_cursor).to eq 'cursor4'
     end
 
     it 'filters out non-standard arguments' do
       applicants = Fountain::Api::Applicants.new.list labels: 'Bar', cursor: 'abcd', foo: 'baz'
-      expect(applicants.map(&:class)).to eq [Fountain::Applicant]
+      expect(applicants).to be_an Fountain::Applicants
+
+      expect(applicants.count).to eq 1
       expect(applicants.map(&:name)).to eq ['Richard']
+
+      expect(applicants.current_cursor).to be_nil
+      expect(applicants.next_cursor).to be_nil
     end
   end
 
