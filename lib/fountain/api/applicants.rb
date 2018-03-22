@@ -4,7 +4,7 @@ module Fountain
     # Fountain Applicant API
     #
     class Applicants
-      include RequestHelper
+      extend RequestHelper
 
       #
       # List applicants
@@ -14,8 +14,8 @@ module Fountain
       #                 stage - Filter applicants by stage type
       #                 labels - MUST be URL-encoded
       #                 cursor - Cursor parameter for cursor-based pagination
-      # @return [Array] of Fountain::Applicant
-      def list(filter_options = {})
+      # @return [Fountain::Applicants]
+      def self.list(filter_options = {})
         response = request_json(
           '/v2/applicants',
           body: Util.slice_hash(
@@ -40,7 +40,7 @@ module Fountain
       #                 skip_automated_actions - `true` if you want to skip automated
       #                                          actions when advancing the applicant
       # @return [Fountain::Applicant]
-      def create(name, email, phone_number, create_options = {})
+      def self.create(name, email, phone_number, create_options = {})
         filtered_params = Util.slice_hash(
           create_options,
           :data, :secure_data, :funnel_id, :stage_id, :skip_automated_actions
@@ -59,7 +59,7 @@ module Fountain
       # Delete an Applicant
       # @param [String] applicant_id ID of the Fountain applicant
       # @return [Boolean]
-      def delete(applicant_id)
+      def self.delete(applicant_id)
         response = request(
           "/v2/applicants/#{applicant_id}",
           method: :delete
@@ -72,7 +72,7 @@ module Fountain
       # Get Applicant Info
       # @param [String] applicant_id ID of the Fountain applicant
       # @return [Fountain::Applicant]
-      def get(applicant_id)
+      def self.get(applicant_id)
         response = request_json("/v2/applicants/#{applicant_id}")
         Fountain::Applicant.new response
       end
@@ -91,7 +91,7 @@ module Fountain
       #                 on_hold_reason
       # @return [Fountain::Applicant]
       #
-      def update(applicant_id, update_options = {})
+      def self.update(applicant_id, update_options = {})
         response = request_json(
           "/v2/applicants/#{applicant_id}",
           method: :put,
@@ -102,6 +102,15 @@ module Fountain
           )
         )
         Fountain::Applicant.new response
+      end
+
+      #
+      # Get Applicant Documents
+      # @param [String] applicant_id ID of the Fountain applicant
+      # @return [[Fountain::SecureDocument]]
+      def self.get_secure_documents(applicant_id)
+        response = request_json("/v2/applicants/#{applicant_id}/secure_documents")
+        response['secure_documents'].map { |hash| Fountain::SecureDocument.new hash }
       end
     end
   end

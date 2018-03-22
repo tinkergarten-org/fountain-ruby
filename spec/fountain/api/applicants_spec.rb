@@ -19,7 +19,7 @@ describe Fountain::Api::Applicants do
     }
   end
 
-  describe '#list' do
+  describe '.list' do
     before do
       # Stubs for /v2/applicants REST API
       stub_authed_request(:get, '/v2/applicants')
@@ -54,7 +54,7 @@ describe Fountain::Api::Applicants do
     end
 
     it 'returns all applicants when passed no parameters' do
-      applicants = Fountain::Api::Applicants.new.list
+      applicants = Fountain::Api::Applicants.list
       expect(applicants).to be_an Fountain::Applicants
 
       expect(applicants.count).to eq 2
@@ -65,7 +65,7 @@ describe Fountain::Api::Applicants do
     end
 
     it 'passes through arguments' do
-      applicants = Fountain::Api::Applicants.new.list funnel_id: 1234, stage_id: 4567, stage: 'Foo'
+      applicants = Fountain::Api::Applicants.list funnel_id: 1234, stage_id: 4567, stage: 'Foo'
       expect(applicants).to be_an Fountain::Applicants
 
       expect(applicants.count).to eq 1
@@ -76,7 +76,7 @@ describe Fountain::Api::Applicants do
     end
 
     it 'filters out non-standard arguments' do
-      applicants = Fountain::Api::Applicants.new.list labels: 'Bar', cursor: 'abcd', foo: 'baz'
+      applicants = Fountain::Api::Applicants.list labels: 'Bar', cursor: 'abcd', foo: 'baz'
       expect(applicants).to be_an Fountain::Applicants
 
       expect(applicants.count).to eq 1
@@ -87,7 +87,7 @@ describe Fountain::Api::Applicants do
     end
   end
 
-  describe '#create' do
+  describe '.create' do
     before do
       # Stubs for /v2/applicants
       stub_authed_request(:post, '/v2/applicants')
@@ -123,7 +123,7 @@ describe Fountain::Api::Applicants do
     end
 
     it 'returns created applicant' do
-      applicant = Fountain::Api::Applicants.new.create(
+      applicant = Fountain::Api::Applicants.create(
         'Richard',
         'rich@gmail.com',
         '1231231234'
@@ -134,7 +134,7 @@ describe Fountain::Api::Applicants do
     end
 
     it 'filters out non-standard arguments' do
-      applicant = Fountain::Api::Applicants.new.create(
+      applicant = Fountain::Api::Applicants.create(
         'Frank',
         'frank@gmail.com',
         '321321311',
@@ -151,7 +151,7 @@ describe Fountain::Api::Applicants do
     end
   end
 
-  describe '#delete' do
+  describe '.delete' do
     before do
       # Stubs for /v2/applicants/:id REST API
       stub_authed_request(:delete, '/v2/applicants/01234567-0000-0000-0000-000000000000')
@@ -159,12 +159,12 @@ describe Fountain::Api::Applicants do
     end
 
     it 'deletes the applicant' do
-      result = Fountain::Api::Applicants.new.delete('01234567-0000-0000-0000-000000000000')
+      result = Fountain::Api::Applicants.delete('01234567-0000-0000-0000-000000000000')
       expect(result).to eq true
     end
   end
 
-  describe '#get' do
+  describe '.get' do
     before do
       # Stubs for /v2/applicants/:id REST API
       stub_authed_request(:get, '/v2/applicants/01234567-0000-0000-0000-000000000000')
@@ -175,14 +175,14 @@ describe Fountain::Api::Applicants do
     end
 
     it 'returns the applicant' do
-      applicant = Fountain::Api::Applicants.new.get('01234567-0000-0000-0000-000000000000')
+      applicant = Fountain::Api::Applicants.get('01234567-0000-0000-0000-000000000000')
       expect(applicant).to be_a Fountain::Applicant
       expect(applicant.id).to eq '01234567-0000-0000-0000-000000000000'
       expect(applicant.name).to eq 'Richard'
     end
   end
 
-  describe '#update' do
+  describe '.update' do
     let(:applicant1) do
       {
         'id' => '01234567-0000-0000-0000-000000000000',
@@ -233,7 +233,7 @@ describe Fountain::Api::Applicants do
     end
 
     it 'returns updated applicant' do
-      applicant = Fountain::Api::Applicants.new.update(
+      applicant = Fountain::Api::Applicants.update(
         '01234567-0000-0000-0000-000000000000',
         name: 'Dicky',
         email: 'richard@gmail.com',
@@ -248,7 +248,7 @@ describe Fountain::Api::Applicants do
     end
 
     it 'filters out non-standard arguments' do
-      applicant = Fountain::Api::Applicants.new.update(
+      applicant = Fountain::Api::Applicants.update(
         '01234567-0000-0000-0000-000000000001',
         name: 'Franky',
         height: '150'
@@ -259,8 +259,43 @@ describe Fountain::Api::Applicants do
 
     it 'raises a not found error if ID was not found' do
       expect do
-        Fountain::Api::Applicants.new.update('1234', name: 'Franky')
+        Fountain::Api::Applicants.update('1234', name: 'Franky')
       end.to raise_error Fountain::NotFoundError
+    end
+  end
+
+  describe '.get_secure_documents' do
+    let(:document1) do
+      {
+        'id' => 'a71d7cf4-2d9d-4d4b-82ef-8894bbe78120',
+        'name' => 'upload_one',
+        'friendly_name' => 'Upload one',
+        'filename' => 'CCUzGocUMAEPkN3.jpg',
+        'public_url' => 'https://filez.example.com/super/secret/file.pdf',
+        'size' => 25_718,
+        'stage' => {
+          'id' => '1ac2f82c-caa9-4b13-ad5b-df555e050524',
+          'title' => 'Approved'
+        }
+      }
+    end
+
+    before do
+      # Stubs for /v2/applicants/:applicant_id/secure_documents REST API
+      stub_authed_request(
+        :get,
+        '/v2/applicants/01234567-0000-0000-0000-000000000000/secure_documents'
+      ).to_return(
+        body: { secure_documents: [document1] }.to_json,
+        status: 200
+      )
+    end
+
+    it 'returns the document' do
+      documents = Fountain::Api::Applicants.get_secure_documents('01234567-0000-0000-0000-000000000000')
+      expect(documents).to be_an Array
+      expect(documents.map(&:class)).to eq [Fountain::SecureDocument]
+      expect(documents.map(&:id)).to eq ['a71d7cf4-2d9d-4d4b-82ef-8894bbe78120']
     end
   end
 end
