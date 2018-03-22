@@ -25,7 +25,7 @@ module Fountain
       def request(path, options = {})
         options = DEFAULT_REQUEST_OPTIONS.merge(options)
 
-        raise Fountain::InvalidMethodError unless %i[get post put].include? options[:method]
+        raise Fountain::InvalidMethodError unless %i[get post put delete].include? options[:method]
 
         http = create_http(options)
         req = create_request(path, options)
@@ -66,12 +66,11 @@ module Fountain
         headers = get_headers(options)
         body = options[:body]
 
-        if options[:method] == :post
-          create_post_request path, headers, body
-        elsif options[:method] == :put
-          create_put_request path, headers, body
-        else
-          create_get_request path, headers, body
+        case options[:method]
+        when :post then create_post_request path, headers, body
+        when :put then create_put_request path, headers, body
+        when :delete then create_delete_request path, headers
+        else create_get_request path, headers, body
         end
       end
 
@@ -85,6 +84,10 @@ module Fountain
         req = Net::HTTP::Put.new(path, headers)
         add_body(req, body) if body
         req
+      end
+
+      def create_delete_request(path, headers)
+        Net::HTTP::Delete.new(path, headers)
       end
 
       def create_get_request(path, headers, body)

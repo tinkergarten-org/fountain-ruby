@@ -166,6 +166,19 @@ describe Fountain::Api::Applicants do
     end
   end
 
+  describe '#delete' do
+    before do
+      # Stubs for /v2/applicants/:id REST API
+      stub_authed_request(:delete, '/v2/applicants/01234567-0000-0000-0000-000000000000')
+        .to_return(status: 200)
+    end
+
+    it 'deletes the applicant' do
+      result = Fountain::Api::Applicants.new.delete('01234567-0000-0000-0000-000000000000')
+      expect(result).to eq true
+    end
+  end
+
   describe '#update' do
     let(:applicant1) do
       {
@@ -183,7 +196,7 @@ describe Fountain::Api::Applicants do
     end
 
     before do
-      # Stubs for /v2/applicants/:id REST API
+      # Stubs for /v2/applicants/:id PUT REST API
       stub_authed_request(:put, '/v2/applicants/01234567-0000-0000-0000-000000000000')
         .with(
           body: {

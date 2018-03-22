@@ -56,7 +56,20 @@ module Fountain
       end
 
       #
-      # Update applicant info
+      # Delete an Applicant
+      # @param [String] applicant_id ID of the Fountain applicant
+      # @return [Boolean]
+      def delete(applicant_id)
+        response = request(
+          "/v2/applicants/#{applicant_id}",
+          method: :delete
+        )
+        check_response response
+        true
+      end
+
+      #
+      # Update Applicant Info
       # @param [String] applicant_id ID of the Fountain applicant
       # @param [Hash] update_options A hash of options to update applicant
       #                 name
