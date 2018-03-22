@@ -1,7 +1,7 @@
-[![Travis Build Status](http://img.shields.io/travis/Studiosity/fountain-ruby.svg?style=flat)](https://travis-ci.org/Studiosity/fountain-ruby)
+[![Travis Build Status](https://travis-ci.org/Studiosity/fountain-ruby.svg?branch=master)](https://travis-ci.org/Studiosity/fountain-ruby)
 [![Maintainability](https://api.codeclimate.com/v1/badges/0820e34b69a0dc3a7e8b/maintainability)](https://codeclimate.com/github/Studiosity/fountain-ruby/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/0820e34b69a0dc3a7e8b/test_coverage)](https://codeclimate.com/github/Studiosity/fountain-ruby/test_coverage)
-[![Gem Version](http://img.shields.io/gem/v/fountain.svg?style=flat)](#)
+[![Gem Version](https://badge.fury.io/rb/fountain.svg)](https://badge.fury.io/rb/fountain)
 
 # Fountain REST API for Ruby
 
@@ -18,3 +18,51 @@ gem 'fountain'
 And then execute:
 
     $ bundle
+
+## Supported API calls
+
+#### Applicant Management
+List, create, delete, get, update applicant etc
+
+See https://developer.fountain.com/docs/applicants
+
+## Usage
+
+First, initialise the Fountain API token
+
+```ruby
+Fountain.configure do |config|
+  config.api_token = 'YOUR-FOUNTAIN-API-TOKEN'
+end
+```
+
+#### List all applicants
+```ruby
+applicants = Fountain::Api::Applicants.list
+applicants.each do |applicant|
+  # Do something with the applicant
+end
+applicants = Fountain::Api::Applicants.list(cursor: applicants.next_cursor)
+```
+
+## Contributing
+
+Bug reports and pull requests are welcome on GitHub at https://github.com/Studiosity/fountain-ruby.
+
+Note that spec tests are appreciated to minimise regressions. Before submitting a PR, please ensure that:
+ 
+```bash
+$ rspec
+```
+
+and
+
+```bash
+$ rubocop
+```
+
+both succeed 
+
+## License
+
+The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
