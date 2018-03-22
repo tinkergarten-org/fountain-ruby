@@ -142,6 +142,15 @@ module Fountain
         response = request_json("/v2/applicants/#{applicant_id}/booked_slots")
         response['booked_slots'].map { |hash| Fountain::BookedSlot.new hash }
       end
+
+      #
+      # Get Transition History
+      # @param [String] applicant_id ID of the Fountain applicant
+      # @return [[Fountain::Transition]]
+      def self.get_transition_history(applicant_id)
+        response = request_json("/v2/applicants/#{applicant_id}/transitions")
+        response['transitions'].map { |hash| Fountain::Transition.new hash }
+      end
     end
   end
 end

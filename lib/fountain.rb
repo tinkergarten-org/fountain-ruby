@@ -24,6 +24,7 @@ require 'fountain/document_signature'
 require 'fountain/funnel'
 require 'fountain/secure_document'
 require 'fountain/stage'
+require 'fountain/transition'
 
 require 'fountain/api/request_helper'
 require 'fountain/api/applicants'

@@ -364,4 +364,31 @@ describe Fountain::Api::Applicants do
       expect(sessions.map(&:id)).to eq ['21d7d019-7940-44d1-a710-0a79dd71cfcd']
     end
   end
+
+  describe '.get_transition_history' do
+    let(:transition) do
+      {
+        'stage_title' => 'Approved',
+        'created_at' => '2016-12-12T13:24:44.381-08:00'
+      }
+    end
+
+    before do
+      # Stubs for /v2/applicants/:id/transitions REST API
+      stub_authed_request(:get, '/v2/applicants/01234567-0000-0000-0000-000000000000/transitions')
+        .to_return(
+          body: { transitions: [transition] }.to_json,
+          status: 200
+        )
+    end
+
+    it 'returns the applicants transitions' do
+      transitions = Fountain::Api::Applicants.get_transition_history(
+        '01234567-0000-0000-0000-000000000000'
+      )
+      expect(transitions).to be_an Array
+      expect(transitions.map(&:class)).to eq [Fountain::Transition]
+      expect(transitions.map(&:stage_title)).to eq ['Approved']
+    end
+  end
 end
