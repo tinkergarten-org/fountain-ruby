@@ -112,6 +112,27 @@ module Fountain
         response = request_json("/v2/applicants/#{applicant_id}/secure_documents")
         response['secure_documents'].map { |hash| Fountain::SecureDocument.new hash }
       end
+
+      #
+      # Advance an Applicant
+      # @param [String] applicant_id ID of the Fountain applicant
+      # @param [Hash] advance_options A hash of options to advance applicant
+      #                 skip_automated_actions - `true` if you want to skip automated
+      #                                          actions when advancing the applicant
+      #                 stage_id - Destination stage's ID. If not provided, the applicant
+      #                              will advance to the next stage by default.
+      def self.advance_applicant(applicant_id, advance_options = {})
+        response = request(
+          "/v2/applicants/#{applicant_id}/advance",
+          method: :put,
+          body: Util.slice_hash(
+            advance_options,
+            :skip_automated_actions, :stage_id
+          )
+        )
+        check_response response, Net::HTTPNoContent
+        true
+      end
     end
   end
 end

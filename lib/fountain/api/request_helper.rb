@@ -17,8 +17,9 @@ module Fountain
       }.freeze
 
       def request_json(path, options = {})
+        expected_response = options.delete :expected_response
         response = request path, options
-        check_response response
+        check_response response, expected_response
         parse_response response.body
       end
 
@@ -34,9 +35,10 @@ module Fountain
 
       private
 
-      def check_response(response)
+      def check_response(response, expected_response = nil)
+        expected_response ||= Net::HTTPOK
         case response
-        when Net::HTTPOK then nil
+        when expected_response then nil
         when Net::HTTPUnauthorized then raise Fountain::AuthenticationError
         when Net::HTTPNotFound then raise Fountain::NotFoundError
         else raise HTTPError, "Invalid http response code: #{response.code}"

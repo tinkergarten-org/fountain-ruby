@@ -298,4 +298,38 @@ describe Fountain::Api::Applicants do
       expect(documents.map(&:id)).to eq ['a71d7cf4-2d9d-4d4b-82ef-8894bbe78120']
     end
   end
+
+  describe '.advance_applicant' do
+    before do
+      # Stubs for /v2/applicants/:id/advance REST API
+      stub_authed_request(:put, '/v2/applicants/01234567-0000-0000-0000-000000000000/advance')
+        .to_return(status: 204)
+
+      stub_authed_request(:put, '/v2/applicants/01234567-0000-0000-0000-000000000001/advance')
+        .with(
+          body: {
+            skip_automated_actions: true,
+            stage_id: 'stage-id'
+          }.to_json
+        )
+        .to_return(status: 204)
+    end
+
+    it 'advances an applicant' do
+      result = Fountain::Api::Applicants.advance_applicant(
+        '01234567-0000-0000-0000-000000000000'
+      )
+      expect(result).to eq true
+    end
+
+    it 'advances an applicant to a specific stage (ignoring non-standard arguments)' do
+      result = Fountain::Api::Applicants.advance_applicant(
+        '01234567-0000-0000-0000-000000000001',
+        skip_automated_actions: true,
+        stage_id: 'stage-id',
+        invalid_arg: 'should not be included'
+      )
+      expect(result).to eq true
+    end
+  end
 end
