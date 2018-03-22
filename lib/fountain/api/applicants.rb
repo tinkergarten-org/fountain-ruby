@@ -69,6 +69,15 @@ module Fountain
       end
 
       #
+      # Get Applicant Info
+      # @param [String] applicant_id ID of the Fountain applicant
+      # @return [Fountain::Applicant]
+      def get(applicant_id)
+        response = request_json("/v2/applicants/#{applicant_id}")
+        Fountain::Applicant.new response
+      end
+
+      #
       # Update Applicant Info
       # @param [String] applicant_id ID of the Fountain applicant
       # @param [Hash] update_options A hash of options to update applicant

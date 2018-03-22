@@ -4,22 +4,22 @@ describe Fountain::Api::Applicants do
   before { Fountain.api_token = AUTH_TOKEN }
   after { Fountain.api_token = nil }
 
-  describe '#list' do
-    let(:applicant1) do
-      {
-        'id' => '01234567-0000-0000-0000-000000000000',
-        'email' => 'rich@gmail.com',
-        'name' => 'Richard'
-      }
-    end
-    let(:applicant2) do
-      {
-        'id' => '01234567-0000-0000-0000-000000000001',
-        'email' => 'frank@gmail.com',
-        'name' => 'Frank'
-      }
-    end
+  let(:applicant1) do
+    {
+      'id' => '01234567-0000-0000-0000-000000000000',
+      'email' => 'rich@gmail.com',
+      'name' => 'Richard'
+    }
+  end
+  let(:applicant2) do
+    {
+      'id' => '01234567-0000-0000-0000-000000000001',
+      'email' => 'frank@gmail.com',
+      'name' => 'Frank'
+    }
+  end
 
+  describe '#list' do
     before do
       # Stubs for /v2/applicants REST API
       stub_authed_request(:get, '/v2/applicants')
@@ -88,28 +88,13 @@ describe Fountain::Api::Applicants do
   end
 
   describe '#create' do
-    let(:applicant1) do
-      {
-        'id' => '01234567-0000-0000-0000-000000000000',
-        'email' => 'roger@gmail.com',
-        'name' => 'Roger Rogerson'
-      }
-    end
-    let(:applicant2) do
-      {
-        'id' => '01234567-0000-0000-0000-000000000001',
-        'email' => 'will@gmail.com',
-        'name' => 'Will Wilson'
-      }
-    end
-
     before do
       # Stubs for /v2/applicants
       stub_authed_request(:post, '/v2/applicants')
         .with(
           body: {
-            name: 'Roger Rogerson',
-            email: 'roger@gmail.com',
+            name: 'Richard',
+            email: 'rich@gmail.com',
             phone_number: '1231231234'
           }.to_json
         )
@@ -121,8 +106,8 @@ describe Fountain::Api::Applicants do
       stub_authed_request(:post, '/v2/applicants')
         .with(
           body: {
-            name: 'Will Wilson',
-            email: 'will@gmail.com',
+            name: 'Frank',
+            email: 'frank@gmail.com',
             phone_number: '321321311',
             data: { foo: 'bar' },
             secure_data: { baz: 'foo' },
@@ -139,19 +124,19 @@ describe Fountain::Api::Applicants do
 
     it 'returns created applicant' do
       applicant = Fountain::Api::Applicants.new.create(
-        'Roger Rogerson',
-        'roger@gmail.com',
+        'Richard',
+        'rich@gmail.com',
         '1231231234'
       )
       expect(applicant).to be_a Fountain::Applicant
       expect(applicant.id).to eq '01234567-0000-0000-0000-000000000000'
-      expect(applicant.name).to eq 'Roger Rogerson'
+      expect(applicant.name).to eq 'Richard'
     end
 
     it 'filters out non-standard arguments' do
       applicant = Fountain::Api::Applicants.new.create(
-        'Will Wilson',
-        'will@gmail.com',
+        'Frank',
+        'frank@gmail.com',
         '321321311',
         data: { foo: 'bar' },
         secure_data: { baz: 'foo' },
@@ -162,7 +147,7 @@ describe Fountain::Api::Applicants do
       )
       expect(applicant).to be_a Fountain::Applicant
       expect(applicant.id).to eq '01234567-0000-0000-0000-000000000001'
-      expect(applicant.name).to eq 'Will Wilson'
+      expect(applicant.name).to eq 'Frank'
     end
   end
 
@@ -176,6 +161,24 @@ describe Fountain::Api::Applicants do
     it 'deletes the applicant' do
       result = Fountain::Api::Applicants.new.delete('01234567-0000-0000-0000-000000000000')
       expect(result).to eq true
+    end
+  end
+
+  describe '#get' do
+    before do
+      # Stubs for /v2/applicants/:id REST API
+      stub_authed_request(:get, '/v2/applicants/01234567-0000-0000-0000-000000000000')
+        .to_return(
+          body: applicant1.to_json,
+          status: 200
+        )
+    end
+
+    it 'returns the applicant' do
+      applicant = Fountain::Api::Applicants.new.get('01234567-0000-0000-0000-000000000000')
+      expect(applicant).to be_a Fountain::Applicant
+      expect(applicant.id).to eq '01234567-0000-0000-0000-000000000000'
+      expect(applicant.name).to eq 'Richard'
     end
   end
 
