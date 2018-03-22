@@ -332,4 +332,36 @@ describe Fountain::Api::Applicants do
       expect(result).to eq true
     end
   end
+
+  describe '.get_interview_sessions' do
+    let(:slot) do
+      {
+        'id' => '21d7d019-7940-44d1-a710-0a79dd71cfcd',
+        'start_time' => 'Wed, Jun 03 @11:27am PDT',
+        'end_time' => 'Wed, Jun 03 @11:30am PDT',
+        'location' => 'Seoul',
+        'recruiter' => 'Owen',
+        'instructions' => 'Please call us when you get here',
+        'showed_up' => 'true'
+      }
+    end
+
+    before do
+      # Stubs for /v2/applicants/:id/booked_slots REST API
+      stub_authed_request(:get, '/v2/applicants/01234567-0000-0000-0000-000000000000/booked_slots')
+        .to_return(
+          body: { booked_slots: [slot] }.to_json,
+          status: 200
+        )
+    end
+
+    it 'returns the booked slots' do
+      sessions = Fountain::Api::Applicants.get_interview_sessions(
+        '01234567-0000-0000-0000-000000000000'
+      )
+      expect(sessions).to be_an Array
+      expect(sessions.map(&:class)).to eq [Fountain::BookedSlot]
+      expect(sessions.map(&:id)).to eq ['21d7d019-7940-44d1-a710-0a79dd71cfcd']
+    end
+  end
 end

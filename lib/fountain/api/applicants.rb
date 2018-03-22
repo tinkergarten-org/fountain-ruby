@@ -133,6 +133,15 @@ module Fountain
         check_response response, Net::HTTPNoContent
         true
       end
+
+      #
+      # Get Interview Sessions
+      # @param [String] applicant_id ID of the Fountain applicant
+      # @return [[Fountain::BookedSlot]]
+      def self.get_interview_sessions(applicant_id)
+        response = request_json("/v2/applicants/#{applicant_id}/booked_slots")
+        response['booked_slots'].map { |hash| Fountain::BookedSlot.new hash }
+      end
     end
   end
 end
