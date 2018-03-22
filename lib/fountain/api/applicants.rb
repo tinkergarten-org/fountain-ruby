@@ -27,6 +27,35 @@ module Fountain
       end
 
       #
+      # Create an Applicant
+      # @param [String] name Full name of the applicant
+      # @param [String] email Email address of the applicant
+      # @param [String] phone_number Phone number (does not have to be USA)
+      # @param [Hash] create_options A hash of optional parameters
+      #                 data - must be passed in a data object/array
+      #                 secure_data - See 'Secure Fields' section of
+      #                               https://developer.fountain.com/docs/post-apiv2applicants
+      #                 funnel_id - Create applicant under a certain opening (funnel)
+      #                 stage_id - Create applicant under a certain stage
+      #                 skip_automated_actions - `true` if you want to skip automated
+      #                                          actions when advancing the applicant
+      # @return [Fountain::Applicant]
+      def create(name, email, phone_number, create_options = {})
+        filtered_params = Util.slice_hash(
+          create_options,
+          :data, :secure_data, :funnel_id, :stage_id, :skip_automated_actions
+        )
+        response = request_json(
+          '/v2/applicants',
+          method: :post,
+          body: {
+            name: name, email: email, phone_number: phone_number
+          }.merge(filtered_params)
+        )
+        Fountain::Applicant.new response
+      end
+
+      #
       # Update applicant info
       # @param [String] applicant_id ID of the Fountain applicant
       # @param [Hash] update_options A hash of options to update applicant

@@ -87,6 +87,85 @@ describe Fountain::Api::Applicants do
     end
   end
 
+  describe '#create' do
+    let(:applicant1) do
+      {
+        'id' => '01234567-0000-0000-0000-000000000000',
+        'email' => 'roger@gmail.com',
+        'name' => 'Roger Rogerson'
+      }
+    end
+    let(:applicant2) do
+      {
+        'id' => '01234567-0000-0000-0000-000000000001',
+        'email' => 'will@gmail.com',
+        'name' => 'Will Wilson'
+      }
+    end
+
+    before do
+      # Stubs for /v2/applicants
+      stub_authed_request(:post, '/v2/applicants')
+        .with(
+          body: {
+            name: 'Roger Rogerson',
+            email: 'roger@gmail.com',
+            phone_number: '1231231234'
+          }.to_json
+        )
+        .to_return(
+          body: applicant1.to_json,
+          status: 200
+        )
+
+      stub_authed_request(:post, '/v2/applicants')
+        .with(
+          body: {
+            name: 'Will Wilson',
+            email: 'will@gmail.com',
+            phone_number: '321321311',
+            data: { foo: 'bar' },
+            secure_data: { baz: 'foo' },
+            funnel_id: 'funnel-id',
+            stage_id: 'stage-id',
+            skip_automated_actions: true
+          }.to_json
+        )
+        .to_return(
+          body: applicant2.to_json,
+          status: 200
+        )
+    end
+
+    it 'returns created applicant' do
+      applicant = Fountain::Api::Applicants.new.create(
+        'Roger Rogerson',
+        'roger@gmail.com',
+        '1231231234'
+      )
+      expect(applicant).to be_a Fountain::Applicant
+      expect(applicant.id).to eq '01234567-0000-0000-0000-000000000000'
+      expect(applicant.name).to eq 'Roger Rogerson'
+    end
+
+    it 'filters out non-standard arguments' do
+      applicant = Fountain::Api::Applicants.new.create(
+        'Will Wilson',
+        'will@gmail.com',
+        '321321311',
+        data: { foo: 'bar' },
+        secure_data: { baz: 'foo' },
+        funnel_id: 'funnel-id',
+        stage_id: 'stage-id',
+        skip_automated_actions: true,
+        invalid_arg: 'should not be included'
+      )
+      expect(applicant).to be_a Fountain::Applicant
+      expect(applicant.id).to eq '01234567-0000-0000-0000-000000000001'
+      expect(applicant.name).to eq 'Will Wilson'
+    end
+  end
+
   describe '#update' do
     let(:applicant1) do
       {
