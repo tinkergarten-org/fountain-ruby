@@ -1,7 +1,7 @@
 module Fountain
   module Api
     #
-    # Fountain Applicant API
+    # Fountain Applicant Management API
     #
     class Applicants
       extend RequestHelper

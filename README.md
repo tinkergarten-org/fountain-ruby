@@ -39,10 +39,13 @@ end
 #### List all applicants
 ```ruby
 applicants = Fountain::Api::Applicants.list
-applicants.each do |applicant|
-  # Do something with the applicant
+loop do
+  break if applicants.count.zero?
+  applicants.each do |applicant|
+    # Do something with the applicant
+  end
+  applicants = Fountain::Api::Applicants.list(cursor: applicants.next_cursor)
 end
-applicants = Fountain::Api::Applicants.list(cursor: applicants.next_cursor)
 ```
 
 ## Contributing
