@@ -39,7 +39,7 @@ describe Fountain::Slot do
     it { expect(slot.instructions).to eq 'Please call us when you get here' }
   end
 
-  describe '#showed_up' do
-    it { expect(slot.showed_up).to eq true }
+  describe '#showed_up?' do
+    it { expect(slot).to be_showed_up }
   end
 end

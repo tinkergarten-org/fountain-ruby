@@ -28,6 +28,54 @@ module Fountain
       raw_data['custom_id']
     end
 
+    # Address
+    def address
+      raw_data['address']
+    end
+
+    # Time zone
+    def time_zone
+      raw_data['time_zone']
+    end
+
+    # Description
+    def description
+      raw_data['description']
+    end
+
+    # Requirements
+    def requirements
+      raw_data['requirements']
+    end
+
+    # Fields
+    def fields
+      return [] unless raw_data['fields'].is_a? Array
+      raw_data['fields'].map { |hash| Field.new hash }
+    end
+
+    # Stages
+    def stages
+      return [] unless raw_data['stages'].is_a? Array
+      raw_data['stages'].map { |hash| Stage.new hash }
+    end
+
+    # Private
+    def private?
+      raw_data['is_private']
+    end
+
+    # Active
+    def active?
+      raw_data['active']
+    end
+
+    # Location
+    def location
+      return unless raw_data['location'].is_a? Hash
+      Location.new raw_data['location']
+    end
+
     def inspect
       format(
         '#<%<class_name>s:0x%<object_id>p @id="%<id>s" @title="%<title>s">',

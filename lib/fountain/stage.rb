@@ -23,6 +23,11 @@ module Fountain
       raw_data['title']
     end
 
+    # Type
+    def type
+      raw_data['type']
+    end
+
     def inspect
       format(
         '#<%<class_name>s:0x%<object_id>p @id="%<id>s" @title="%<title>s">',

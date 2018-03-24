@@ -44,8 +44,8 @@ module Fountain
     end
 
     # Showed up
-    def showed_up
-      raw_data['showed_up'] == 'true'
+    def showed_up?
+      raw_data['showed_up'].to_s == 'true'
     end
 
     def inspect
