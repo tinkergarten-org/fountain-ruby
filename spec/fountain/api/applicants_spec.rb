@@ -360,7 +360,7 @@ describe Fountain::Api::Applicants do
         '01234567-0000-0000-0000-000000000000'
       )
       expect(sessions).to be_an Array
-      expect(sessions.map(&:class)).to eq [Fountain::BookedSlot]
+      expect(sessions.map(&:class)).to eq [Fountain::Slot]
       expect(sessions.map(&:id)).to eq ['21d7d019-7940-44d1-a710-0a79dd71cfcd']
     end
   end

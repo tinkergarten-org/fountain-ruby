@@ -137,10 +137,10 @@ module Fountain
       #
       # Get Interview Sessions
       # @param [String] applicant_id ID of the Fountain applicant
-      # @return [[Fountain::BookedSlot]]
+      # @return [[Fountain::Slot]]
       def self.get_interview_sessions(applicant_id)
         response = request_json("/v2/applicants/#{applicant_id}/booked_slots")
-        response['booked_slots'].map { |hash| Fountain::BookedSlot.new hash }
+        response['booked_slots'].map { |hash| Fountain::Slot.new hash }
       end
 
       #

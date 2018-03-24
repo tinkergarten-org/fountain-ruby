@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Fountain::Applicant do
+describe Fountain::Applicants do
   let(:data) do
     {
       applicants: [

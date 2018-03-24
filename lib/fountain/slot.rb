@@ -1,19 +1,19 @@
 module Fountain
   #
-  # Fountain Booked Slot
+  # Fountain Slot
   #
-  class BookedSlot
-    # Raw booked slot data
+  class Slot
+    # Raw slot data
     attr_reader :raw_data
 
     #
-    # @param [Hash] data Raw booked slot data
+    # @param [Hash] data Raw slot data
     #
     def initialize(data)
       @raw_data = Util.stringify_hash_keys data
     end
 
-    # Booked slot ID
+    # Slot ID
     def id
       raw_data['id']
     end

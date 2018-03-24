@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Fountain::BookedSlot do
+describe Fountain::Slot do
   let(:data) do
     {
       id: '21d7d019-7940-44d1-a710-0a79dd71cfcd',
@@ -13,7 +13,7 @@ describe Fountain::BookedSlot do
     }
   end
 
-  let(:slot) { Fountain::BookedSlot.new data }
+  let(:slot) { Fountain::Slot.new data }
 
   describe '#id' do
     it { expect(slot.id).to eq '21d7d019-7940-44d1-a710-0a79dd71cfcd' }
