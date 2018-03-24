@@ -52,8 +52,8 @@ describe Fountain::Api::Labels do
         :put,
         '/v2/applicants/01234567-0000-0000-0000-000000000000/labels/my_label'
       ).to_return(
-         body: { labels: [label] }.to_json,
-         status: 200
+        body: { labels: [label] }.to_json,
+        status: 200
       )
 
       stub_authed_request(
@@ -66,12 +66,12 @@ describe Fountain::Api::Labels do
 
       stub_authed_request(
         :put,
-        '/v2/applicants/01234567-0000-0000-0000-000000000000/labels/New%20Label'
+        '/v2/applicants/01234567-0000-0000-0000-000000000000/labels/New+Label'
       ).with(
-         body: {
-           completed: false,
-           completed_at: '2018-04-03'
-         }.to_json
+        body: {
+          completed: false,
+          completed_at: '2018-04-03'
+        }.to_json
       ).to_return(
         body: { labels: [label3] }.to_json,
         status: 200

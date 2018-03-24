@@ -1,4 +1,5 @@
 require 'date'
+require 'cgi'
 
 module Fountain
   module Api
@@ -31,7 +32,7 @@ module Fountain
           filtered_options[:completed_at] = filtered_options[:completed_at].strftime('%F')
         end
         response = request_json(
-          "/v2/applicants/#{applicant_id}/labels/#{URI.encode(title)}",
+          "/v2/applicants/#{applicant_id}/labels/#{CGI.escape(title)}",
           method: :put,
           body: filtered_options
         )
