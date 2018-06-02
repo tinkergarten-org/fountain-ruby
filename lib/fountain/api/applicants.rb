@@ -48,6 +48,7 @@ module Fountain
         response = request_json(
           '/v2/applicants',
           method: :post,
+          expected_response: Net::HTTPCreated,
           body: {
             name: name, email: email, phone_number: phone_number
           }.merge(filtered_params)

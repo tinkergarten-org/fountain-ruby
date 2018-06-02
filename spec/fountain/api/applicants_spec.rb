@@ -100,7 +100,7 @@ describe Fountain::Api::Applicants do
         )
         .to_return(
           body: applicant1.to_json,
-          status: 200
+          status: 201
         )
 
       stub_authed_request(:post, '/v2/applicants')
@@ -118,7 +118,7 @@ describe Fountain::Api::Applicants do
         )
         .to_return(
           body: applicant2.to_json,
-          status: 200
+          status: 201
         )
     end
 

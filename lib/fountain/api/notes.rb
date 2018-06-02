@@ -24,6 +24,7 @@ module Fountain
         response = request_json(
           "/v2/applicants/#{applicant_id}/notes",
           method: :post,
+          expected_response: Net::HTTPCreated,
           body: { content: content }
         )
         Fountain::Note.new response

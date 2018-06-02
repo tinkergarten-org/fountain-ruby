@@ -52,7 +52,7 @@ describe Fountain::Api::Notes do
         )
         .to_return(
           body: note.to_json,
-          status: 200
+          status: 201
         )
     end
 
