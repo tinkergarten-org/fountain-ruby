@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'uri'
 require 'openssl'
 require 'net/http'
@@ -101,6 +103,7 @@ module Fountain
         headers = options[:headers]
         headers ||= {}
         raise Fountain::MissingApiKeyError if Fountain.api_token.nil?
+
         headers['X-ACCESS-TOKEN'] = Fountain.api_token
         headers
       end

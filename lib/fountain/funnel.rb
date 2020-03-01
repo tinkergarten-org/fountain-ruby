@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Fountain
   #
   # Fountain Funnel
@@ -51,12 +53,14 @@ module Fountain
     # Fields
     def fields
       return [] unless raw_data['fields'].is_a? Array
+
       raw_data['fields'].map { |hash| Field.new hash }
     end
 
     # Stages
     def stages
       return [] unless raw_data['stages'].is_a? Array
+
       raw_data['stages'].map { |hash| Stage.new hash }
     end
 
@@ -73,6 +77,7 @@ module Fountain
     # Location
     def location
       return unless raw_data['location'].is_a? Hash
+
       Location.new raw_data['location']
     end
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Fountain
   #
   # Fountain Applicant
@@ -56,12 +58,14 @@ module Fountain
     # Background checks
     def background_checks
       return [] unless raw_data['background_checks'].is_a? Array
+
       raw_data['background_checks'].map { |check| BackgroundCheck.new check }
     end
 
     # Document signatures
     def document_signatures
       return [] unless raw_data['document_signatures'].is_a? Array
+
       raw_data['document_signatures'].map { |signature| DocumentSignature.new signature }
     end
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Fountain
   #
   # Fountain Note
@@ -36,6 +38,7 @@ module Fountain
     # User
     def user
       return unless raw_data['user'].is_a? Hash
+
       User.new raw_data['user']
     end
 

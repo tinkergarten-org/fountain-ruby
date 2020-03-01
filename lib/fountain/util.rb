@@ -1,8 +1,12 @@
+# frozen_string_literal: true
+
 module Fountain
   #
   # Fountain generic utility functions
   #
   module Util
+    module_function
+
     #
     # Stringify symbolized hash keys
     # @param [Hash] hash A string/symbol keyed hash
@@ -20,7 +24,6 @@ module Fountain
       end
       new_hash
     end
-    module_function :stringify_hash_keys
 
     #
     # Slice keys from hash
@@ -37,6 +40,5 @@ module Fountain
       end
       new_hash
     end
-    module_function :slice_hash
   end
 end
