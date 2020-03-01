@@ -22,11 +22,11 @@ describe Fountain::Slot do
   end
 
   describe '#start_time' do
-    it { expect(slot.start_time).to be_within(0.001).of Time.new(2018, 6, 3, 11, 27, 0, '-07:00') }
+    it { expect(slot.start_time).to be_within(0.001).of Time.new(Time.now.year, 6, 3, 11, 27, 0, '-07:00') }
   end
 
   describe '#end_time' do
-    it { expect(slot.end_time).to be_within(0.001).of Time.new(2018, 6, 3, 11, 30, 0, '-07:00') }
+    it { expect(slot.end_time).to be_within(0.001).of Time.new(Time.now.year, 6, 3, 11, 30, 0, '-07:00') }
   end
 
   describe '#location' do
