@@ -12,7 +12,7 @@ describe Fountain::BackgroundCheck do
       'report_id' => '4722c07dd9a10c3985ae432a'
     }
   end
-  let(:background_check) { Fountain::BackgroundCheck.new data }
+  let(:background_check) { described_class.new data }
 
   describe '#title' do
     it { expect(background_check.title).to eq 'Driver license check' }

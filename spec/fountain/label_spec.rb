@@ -9,7 +9,7 @@ describe Fountain::Label do
       'completed' => true
     }
   end
-  let(:label) { Fountain::Label.new data }
+  let(:label) { described_class.new data }
 
   describe '#title' do
     it { expect(label.title).to eq 'Label 0' }

@@ -10,7 +10,7 @@ describe Fountain::Stage do
       'type' => 'HiredStage'
     }
   end
-  let(:stage) { Fountain::Stage.new data }
+  let(:stage) { described_class.new data }
 
   describe '#id' do
     it { expect(stage.id).to eq '274d2929-e1d3-4535-b1b6-b5e4fc820f21' }

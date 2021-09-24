@@ -9,12 +9,19 @@ require 'fountain/util'
 
 module Fountain
   class Error < StandardError; end
+
   class HTTPError < Error; end
+
   class NotFoundError < HTTPError; end
+
   class AuthenticationError < HTTPError; end
+
   class InvalidMethodError < HTTPError; end
+
   class JsonParseError < Error; end
+
   class MissingApiKeyError < Error; end
+
   class StatusError < Error; end
 end
 

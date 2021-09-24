@@ -11,7 +11,7 @@ describe Fountain::Field do
     }
   end
 
-  let(:field) { Fountain::Field.new data }
+  let(:field) { described_class.new data }
 
   describe '#question' do
     it { expect(field.question).to eq 'Foo' }

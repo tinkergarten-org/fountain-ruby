@@ -18,7 +18,7 @@ describe Fountain::SecureDocument do
     }
   end
 
-  let(:document) { Fountain::SecureDocument.new data }
+  let(:document) { described_class.new data }
 
   describe '#id' do
     it { expect(document.id).to eq 'a71d7cf4-2d9d-4d4b-82ef-8894bbe78120' }

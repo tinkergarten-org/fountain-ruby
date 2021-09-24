@@ -4,6 +4,7 @@ require 'spec_helper'
 
 describe Fountain::Api::Notes do
   before { Fountain.api_token = AUTH_TOKEN }
+
   after { Fountain.api_token = nil }
 
   let(:note) do
@@ -34,7 +35,7 @@ describe Fountain::Api::Notes do
     end
 
     it 'returns the applicants notes' do
-      notes = Fountain::Api::Notes.list(
+      notes = described_class.list(
         '01234567-0000-0000-0000-000000000000'
       )
       expect(notes).to be_an Array
@@ -59,7 +60,7 @@ describe Fountain::Api::Notes do
     end
 
     it 'returns the created note' do
-      note = Fountain::Api::Notes.create(
+      note = described_class.create(
         '01234567-0000-0000-0000-000000000000',
         'This is a great candidate'
       )
@@ -78,7 +79,7 @@ describe Fountain::Api::Notes do
     end
 
     it 'deletes the applicant' do
-      result = Fountain::Api::Notes.delete(
+      result = described_class.delete(
         '01234567-0000-0000-0000-000000000000',
         '11111111-0000-0000-0000-000000000000'
       )
@@ -101,7 +102,7 @@ describe Fountain::Api::Notes do
     end
 
     it 'returns the created note' do
-      note = Fountain::Api::Notes.update(
+      note = described_class.update(
         '01234567-0000-0000-0000-000000000000',
         '11111111-0000-0000-0000-000000000000',
         'This is a better candidate'

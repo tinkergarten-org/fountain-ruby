@@ -4,6 +4,7 @@ require 'spec_helper'
 
 describe Fountain::Api::Funnels do
   before { Fountain.api_token = AUTH_TOKEN }
+
   after { Fountain.api_token = nil }
 
   let(:funnel1) do
@@ -61,7 +62,7 @@ describe Fountain::Api::Funnels do
     end
 
     it 'returns first page of funnels when no parameters passed' do
-      funnels = Fountain::Api::Funnels.list
+      funnels = described_class.list
       expect(funnels).to be_a Fountain::Funnels
 
       expect(funnels.count).to eq 1
@@ -72,7 +73,7 @@ describe Fountain::Api::Funnels do
     end
 
     it 'passes through page argument' do
-      funnels = Fountain::Api::Funnels.list(page: 3)
+      funnels = described_class.list(page: 3)
       expect(funnels).to be_an Fountain::Funnels
 
       expect(funnels.count).to eq 1
@@ -101,7 +102,7 @@ describe Fountain::Api::Funnels do
     end
 
     it 'updates funnel' do
-      funnel = Fountain::Api::Funnels.update(
+      funnel = described_class.update(
         '550e8400-e29b-41d4-a716-446655440000'
       )
       expect(funnel).to be_a Fountain::Funnel
@@ -109,7 +110,7 @@ describe Fountain::Api::Funnels do
     end
 
     it 'filters non-standard arguments' do
-      funnel = Fountain::Api::Funnels.update(
+      funnel = described_class.update(
         '550e8400-e29b-41d4-a716-446655440000',
         custom_id: '3d67750a-dcf4-4ada-a3e4-ee44661949fc'
       )
@@ -140,7 +141,7 @@ describe Fountain::Api::Funnels do
     end
 
     it 'returns all stages for a funnel' do
-      stages = Fountain::Api::Funnels.list_stages(
+      stages = described_class.list_stages(
         '550e8400-e29b-41d4-a716-446655440000'
       )
       expect(stages).to be_an Array

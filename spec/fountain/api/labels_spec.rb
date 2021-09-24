@@ -4,6 +4,7 @@ require 'spec_helper'
 
 describe Fountain::Api::Labels do
   before { Fountain.api_token = AUTH_TOKEN }
+
   after { Fountain.api_token = nil }
 
   let(:label) do
@@ -24,7 +25,7 @@ describe Fountain::Api::Labels do
     end
 
     it 'returns the applicants labels' do
-      labels = Fountain::Api::Labels.applicant_labels(
+      labels = described_class.applicant_labels(
         '01234567-0000-0000-0000-000000000000'
       )
       expect(labels).to be_an Array
@@ -81,7 +82,7 @@ describe Fountain::Api::Labels do
     end
 
     it 'updates applicant labels' do
-      labels = Fountain::Api::Labels.update_applicant_label(
+      labels = described_class.update_applicant_label(
         '01234567-0000-0000-0000-000000000000', 'my_label'
       )
       expect(labels).to be_an Array
@@ -90,7 +91,7 @@ describe Fountain::Api::Labels do
     end
 
     it 'URI encodes labels' do
-      labels = Fountain::Api::Labels.update_applicant_label(
+      labels = described_class.update_applicant_label(
         '01234567-0000-0000-0000-000000000000', 'other-label'
       )
       expect(labels).to be_an Array
@@ -99,7 +100,7 @@ describe Fountain::Api::Labels do
     end
 
     it 'filters out non-standard arguments and formats completed_at date' do
-      labels = Fountain::Api::Labels.update_applicant_label(
+      labels = described_class.update_applicant_label(
         '01234567-0000-0000-0000-000000000000', 'New Label',
         completed: false, completed_at: Date.new(2018, 4, 3)
       )
@@ -120,7 +121,7 @@ describe Fountain::Api::Labels do
     end
 
     it 'returns the stages labels' do
-      labels = Fountain::Api::Labels.stage_labels(
+      labels = described_class.stage_labels(
         '11111111-0000-0000-0000-000000000000'
       )
       expect(labels).to be_an Array

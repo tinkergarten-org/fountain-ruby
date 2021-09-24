@@ -47,7 +47,7 @@ describe Fountain::Applicant do
     }
   end
 
-  let(:applicant) { Fountain::Applicant.new data }
+  let(:applicant) { described_class.new data }
 
   describe '#id' do
     it { expect(applicant.id).to eq '01234567-0000-0000-0000-000000000000' }

@@ -10,7 +10,7 @@ describe Fountain::DocumentSignature do
       'status' => 'signed'
     }
   end
-  let(:document_signature) { Fountain::DocumentSignature.new data }
+  let(:document_signature) { described_class.new data }
 
   describe '#signature_id' do
     it { expect(document_signature.signature_id).to eq '123dfdsf' }
