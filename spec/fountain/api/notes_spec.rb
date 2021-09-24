@@ -16,6 +16,15 @@ describe Fountain::Api::Notes do
       'user' => user
     }
   end
+  let(:note2) do
+    {
+      'id' => 'bc213c4a-3e58-4a0b-92f2-be980dd46ca9',
+      'content' => 'This candidate was ok',
+      'created_at' => '2017-12-15T14:25:07.123-08:00',
+      'updated_at' => '2017-12-15T14:25:07.123-08:00',
+      'user' => user
+    }
+  end
   let(:user) do
     {
       'name' => 'Ms. Tiana Hermiston',
@@ -55,6 +64,15 @@ describe Fountain::Api::Notes do
         )
         .to_return(
           body: note.to_json,
+          status: 200
+        )
+
+      stub_authed_request(:post, '/v2/applicants/01234567-0000-0000-0000-000000000001/notes')
+        .with(
+          body: { content: 'This candidate was ok' }.to_json
+        )
+        .to_return(
+          body: note2.to_json,
           status: 201
         )
     end
@@ -66,6 +84,15 @@ describe Fountain::Api::Notes do
       )
       expect(note).to be_a Fountain::Note
       expect(note.id).to eq '8f247b3a-a473-4dfd-81cc-46fb527a8823'
+    end
+
+    it 'handles a 201 Created response' do
+      note = described_class.create(
+        '01234567-0000-0000-0000-000000000001',
+        'This candidate was ok'
+      )
+      expect(note).to be_a Fountain::Note
+      expect(note.id).to eq 'bc213c4a-3e58-4a0b-92f2-be980dd46ca9'
     end
   end
 

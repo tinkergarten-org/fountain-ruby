@@ -21,6 +21,13 @@ describe Fountain::Api::Applicants do
       'name' => 'Frank'
     }
   end
+  let(:applicant3) do
+    {
+      'id' => '01234567-0000-0000-0000-000000000002',
+      'email' => 'tom@gmail.com',
+      'name' => 'Tom'
+    }
+  end
 
   describe '.list' do
     before do
@@ -103,7 +110,7 @@ describe Fountain::Api::Applicants do
         )
         .to_return(
           body: applicant1.to_json,
-          status: 201
+          status: 200
         )
 
       stub_authed_request(:post, '/v2/applicants')
@@ -121,6 +128,19 @@ describe Fountain::Api::Applicants do
         )
         .to_return(
           body: applicant2.to_json,
+          status: 200
+        )
+
+      stub_authed_request(:post, '/v2/applicants')
+        .with(
+          body: {
+            name: 'Tom',
+            email: 'tom@gmail.com',
+            phone_number: '0'
+          }.to_json
+        )
+        .to_return(
+          body: applicant3.to_json,
           status: 201
         )
     end
@@ -151,6 +171,17 @@ describe Fountain::Api::Applicants do
       expect(applicant).to be_a Fountain::Applicant
       expect(applicant.id).to eq '01234567-0000-0000-0000-000000000001'
       expect(applicant.name).to eq 'Frank'
+    end
+
+    it 'handles a 201 Created response' do
+      applicant = described_class.create(
+        'Tom',
+        'tom@gmail.com',
+        '0'
+      )
+      expect(applicant).to be_a Fountain::Applicant
+      expect(applicant.id).to eq '01234567-0000-0000-0000-000000000002'
+      expect(applicant.name).to eq 'Tom'
     end
   end
 
