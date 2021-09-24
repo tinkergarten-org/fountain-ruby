@@ -19,7 +19,7 @@ describe Fountain::Note do
       'id' => 'b32b08ce-4a32-4de7-983a-7e2e521405a2'
     }
   end
-  let(:note) { Fountain::Note.new data }
+  let(:note) { described_class.new data }
 
   describe '#id' do
     it { expect(note.id).to eq '8f247b3a-a473-4dfd-81cc-46fb527a8823' }
@@ -41,8 +41,9 @@ describe Fountain::Note do
     it { expect(note.user).to be_a Fountain::User }
     it { expect(note.user.id).to eq 'b32b08ce-4a32-4de7-983a-7e2e521405a2' }
 
-    context 'user is blank' do
+    context 'when user is blank' do
       let(:user_data) { '' }
+
       it { expect(note.user).to be_nil }
     end
   end

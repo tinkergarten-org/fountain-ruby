@@ -4,6 +4,7 @@ require 'spec_helper'
 
 describe Fountain::Api::AvailableSlots do
   before { Fountain.api_token = AUTH_TOKEN }
+
   after { Fountain.api_token = nil }
 
   let(:slot) do
@@ -34,7 +35,7 @@ describe Fountain::Api::AvailableSlots do
     end
 
     it 'confirms the available slot' do
-      slot = Fountain::Api::AvailableSlots.confirm(
+      slot = described_class.confirm(
         'ff4285bc-4988-4077-9ca8-ca95a765f99d',
         '01234567-0000-0000-0000-000000000000'
       )
@@ -80,7 +81,7 @@ describe Fountain::Api::AvailableSlots do
     end
 
     it 'returns first page of slots when only passed stage parameter' do
-      slots = Fountain::Api::AvailableSlots.list(
+      slots = described_class.list(
         '01234567-0000-0000-0000-000000000000'
       )
       expect(slots).to be_an Fountain::Slots
@@ -93,7 +94,7 @@ describe Fountain::Api::AvailableSlots do
     end
 
     it 'passes through page argument' do
-      slots = Fountain::Api::AvailableSlots.list(
+      slots = described_class.list(
         '01234567-0000-0000-0000-000000000000',
         page: 3
       )
@@ -117,7 +118,7 @@ describe Fountain::Api::AvailableSlots do
     end
 
     it 'cancels a booked session' do
-      result = Fountain::Api::AvailableSlots.cancel(
+      result = described_class.cancel(
         '22222222-0000-0000-0000-000000000000'
       )
       expect(result).to eq true

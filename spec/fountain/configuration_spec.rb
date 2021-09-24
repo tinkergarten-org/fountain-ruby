@@ -2,29 +2,29 @@
 
 require 'spec_helper'
 
-describe Fountain do
-  it 'should set default value for host_path option' do
-    expect(Fountain.host_path).to eq 'https://api.fountain.com'
+describe Fountain do # rubocop:disable RSpec/FilePath
+  it 'sets default value for host_path option' do
+    expect(described_class.host_path).to eq 'https://api.fountain.com'
   end
 
-  it 'should not have a default value for api_token option' do
-    expect(Fountain.api_token).to be_nil
+  it 'does not have a default value for api_token option' do
+    expect(described_class.api_token).to be_nil
   end
 
   describe '#configure' do
     before do
-      Fountain.configure do |config|
+      described_class.configure do |config|
         config.host_path = 'https://example.com'
         config.api_token = 'qwerty123456'
       end
     end
 
-    it 'should apply configured host_path option' do
-      expect(Fountain.host_path).to eq 'https://example.com'
+    it 'applies configured host_path option' do
+      expect(described_class.host_path).to eq 'https://example.com'
     end
 
-    it 'should apply configured api_token option' do
-      expect(Fountain.api_token).to eq 'qwerty123456'
+    it 'applies configured api_token option' do
+      expect(described_class.api_token).to eq 'qwerty123456'
     end
   end
 end

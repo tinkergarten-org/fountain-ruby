@@ -40,7 +40,7 @@ module Fountain
       def check_response(response, expected_response = nil)
         expected_response ||= Net::HTTPOK
         case response
-        when expected_response then nil
+        when *[expected_response].flatten then nil
         when Net::HTTPUnauthorized then raise Fountain::AuthenticationError
         when Net::HTTPNotFound then raise Fountain::NotFoundError
         else raise HTTPError, "Invalid http response code: #{response.code}"
@@ -95,7 +95,7 @@ module Fountain
       end
 
       def create_get_request(path, headers, body)
-        path += '?' + body.map { |k, v| "#{k}=#{v}" }.join('&') if body
+        path += "?#{body.map { |k, v| "#{k}=#{v}" }.join('&')}" if body
         Net::HTTP::Get.new(path, headers)
       end
 

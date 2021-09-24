@@ -43,7 +43,7 @@ describe Fountain::Funnel do
       'name' => 'San Francisco'
     }
   end
-  let(:funnel) { Fountain::Funnel.new data }
+  let(:funnel) { described_class.new data }
 
   describe '#id' do
     it { expect(funnel.id).to eq '1f62e031-46b2-4cc6-92da-400182d2c88b' }
@@ -78,8 +78,9 @@ describe Fountain::Funnel do
     it { expect(funnel.fields.map(&:class)).to eq [Fountain::Field] }
     it { expect(funnel.fields.map(&:question)).to eq ['Foo'] }
 
-    context 'no fields provided' do
+    context 'when no fields provided' do
       let(:fields) { nil }
+
       it { expect(funnel.fields).to eq [] }
     end
   end
@@ -89,8 +90,9 @@ describe Fountain::Funnel do
     it { expect(funnel.stages.map(&:class)).to eq [Fountain::Stage] }
     it { expect(funnel.stages.map(&:id)).to eq ['70d446ca-670d-44be-a728-6c3d1921fb97'] }
 
-    context 'no stages provided' do
+    context 'when no stages provided' do
       let(:stages) { nil }
+
       it { expect(funnel.stages).to eq [] }
     end
   end
@@ -107,8 +109,9 @@ describe Fountain::Funnel do
     it { expect(funnel.location).to be_an Fountain::Location }
     it { expect(funnel.location.id).to eq '7f88228c-cba9-4827-b71d-e81244c05d37' }
 
-    context 'no location provided' do
+    context 'when no location provided' do
       let(:location) { nil }
+
       it { expect(funnel.location).to be_nil }
     end
   end

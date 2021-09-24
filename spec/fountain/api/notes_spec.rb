@@ -4,6 +4,7 @@ require 'spec_helper'
 
 describe Fountain::Api::Notes do
   before { Fountain.api_token = AUTH_TOKEN }
+
   after { Fountain.api_token = nil }
 
   let(:note) do
@@ -12,6 +13,15 @@ describe Fountain::Api::Notes do
       'content' => 'This is a great candidate',
       'created_at' => '2017-12-12T14:25:07.734-08:00',
       'updated_at' => '2017-12-13T14:25:07.734-08:00',
+      'user' => user
+    }
+  end
+  let(:note2) do
+    {
+      'id' => 'bc213c4a-3e58-4a0b-92f2-be980dd46ca9',
+      'content' => 'This candidate was ok',
+      'created_at' => '2017-12-15T14:25:07.123-08:00',
+      'updated_at' => '2017-12-15T14:25:07.123-08:00',
       'user' => user
     }
   end
@@ -34,7 +44,7 @@ describe Fountain::Api::Notes do
     end
 
     it 'returns the applicants notes' do
-      notes = Fountain::Api::Notes.list(
+      notes = described_class.list(
         '01234567-0000-0000-0000-000000000000'
       )
       expect(notes).to be_an Array
@@ -54,17 +64,35 @@ describe Fountain::Api::Notes do
         )
         .to_return(
           body: note.to_json,
+          status: 200
+        )
+
+      stub_authed_request(:post, '/v2/applicants/01234567-0000-0000-0000-000000000001/notes')
+        .with(
+          body: { content: 'This candidate was ok' }.to_json
+        )
+        .to_return(
+          body: note2.to_json,
           status: 201
         )
     end
 
     it 'returns the created note' do
-      note = Fountain::Api::Notes.create(
+      note = described_class.create(
         '01234567-0000-0000-0000-000000000000',
         'This is a great candidate'
       )
       expect(note).to be_a Fountain::Note
       expect(note.id).to eq '8f247b3a-a473-4dfd-81cc-46fb527a8823'
+    end
+
+    it 'handles a 201 Created response' do
+      note = described_class.create(
+        '01234567-0000-0000-0000-000000000001',
+        'This candidate was ok'
+      )
+      expect(note).to be_a Fountain::Note
+      expect(note.id).to eq 'bc213c4a-3e58-4a0b-92f2-be980dd46ca9'
     end
   end
 
@@ -78,7 +106,7 @@ describe Fountain::Api::Notes do
     end
 
     it 'deletes the applicant' do
-      result = Fountain::Api::Notes.delete(
+      result = described_class.delete(
         '01234567-0000-0000-0000-000000000000',
         '11111111-0000-0000-0000-000000000000'
       )
@@ -101,7 +129,7 @@ describe Fountain::Api::Notes do
     end
 
     it 'returns the created note' do
-      note = Fountain::Api::Notes.update(
+      note = described_class.update(
         '01234567-0000-0000-0000-000000000000',
         '11111111-0000-0000-0000-000000000000',
         'This is a better candidate'

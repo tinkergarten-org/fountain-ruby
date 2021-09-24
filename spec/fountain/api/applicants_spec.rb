@@ -4,6 +4,7 @@ require 'spec_helper'
 
 describe Fountain::Api::Applicants do
   before { Fountain.api_token = AUTH_TOKEN }
+
   after { Fountain.api_token = nil }
 
   let(:applicant1) do
@@ -18,6 +19,13 @@ describe Fountain::Api::Applicants do
       'id' => '01234567-0000-0000-0000-000000000001',
       'email' => 'frank@gmail.com',
       'name' => 'Frank'
+    }
+  end
+  let(:applicant3) do
+    {
+      'id' => '01234567-0000-0000-0000-000000000002',
+      'email' => 'tom@gmail.com',
+      'name' => 'Tom'
     }
   end
 
@@ -56,7 +64,7 @@ describe Fountain::Api::Applicants do
     end
 
     it 'returns all applicants when passed no parameters' do
-      applicants = Fountain::Api::Applicants.list
+      applicants = described_class.list
       expect(applicants).to be_an Fountain::Applicants
 
       expect(applicants.count).to eq 2
@@ -67,7 +75,7 @@ describe Fountain::Api::Applicants do
     end
 
     it 'passes through arguments' do
-      applicants = Fountain::Api::Applicants.list funnel_id: 1234, stage_id: 4567, stage: 'Foo'
+      applicants = described_class.list funnel_id: 1234, stage_id: 4567, stage: 'Foo'
       expect(applicants).to be_an Fountain::Applicants
 
       expect(applicants.count).to eq 1
@@ -78,7 +86,7 @@ describe Fountain::Api::Applicants do
     end
 
     it 'filters out non-standard arguments' do
-      applicants = Fountain::Api::Applicants.list labels: 'Bar', cursor: 'abcd', foo: 'baz'
+      applicants = described_class.list labels: 'Bar', cursor: 'abcd', foo: 'baz'
       expect(applicants).to be_an Fountain::Applicants
 
       expect(applicants.count).to eq 1
@@ -102,7 +110,7 @@ describe Fountain::Api::Applicants do
         )
         .to_return(
           body: applicant1.to_json,
-          status: 201
+          status: 200
         )
 
       stub_authed_request(:post, '/v2/applicants')
@@ -120,12 +128,25 @@ describe Fountain::Api::Applicants do
         )
         .to_return(
           body: applicant2.to_json,
+          status: 200
+        )
+
+      stub_authed_request(:post, '/v2/applicants')
+        .with(
+          body: {
+            name: 'Tom',
+            email: 'tom@gmail.com',
+            phone_number: '0'
+          }.to_json
+        )
+        .to_return(
+          body: applicant3.to_json,
           status: 201
         )
     end
 
     it 'returns created applicant' do
-      applicant = Fountain::Api::Applicants.create(
+      applicant = described_class.create(
         'Richard',
         'rich@gmail.com',
         '1231231234'
@@ -136,7 +157,7 @@ describe Fountain::Api::Applicants do
     end
 
     it 'filters out non-standard arguments' do
-      applicant = Fountain::Api::Applicants.create(
+      applicant = described_class.create(
         'Frank',
         'frank@gmail.com',
         '321321311',
@@ -151,6 +172,17 @@ describe Fountain::Api::Applicants do
       expect(applicant.id).to eq '01234567-0000-0000-0000-000000000001'
       expect(applicant.name).to eq 'Frank'
     end
+
+    it 'handles a 201 Created response' do
+      applicant = described_class.create(
+        'Tom',
+        'tom@gmail.com',
+        '0'
+      )
+      expect(applicant).to be_a Fountain::Applicant
+      expect(applicant.id).to eq '01234567-0000-0000-0000-000000000002'
+      expect(applicant.name).to eq 'Tom'
+    end
   end
 
   describe '.delete' do
@@ -161,7 +193,7 @@ describe Fountain::Api::Applicants do
     end
 
     it 'deletes the applicant' do
-      result = Fountain::Api::Applicants.delete('01234567-0000-0000-0000-000000000000')
+      result = described_class.delete('01234567-0000-0000-0000-000000000000')
       expect(result).to eq true
     end
   end
@@ -177,7 +209,7 @@ describe Fountain::Api::Applicants do
     end
 
     it 'returns the applicant' do
-      applicant = Fountain::Api::Applicants.get('01234567-0000-0000-0000-000000000000')
+      applicant = described_class.get('01234567-0000-0000-0000-000000000000')
       expect(applicant).to be_a Fountain::Applicant
       expect(applicant.id).to eq '01234567-0000-0000-0000-000000000000'
       expect(applicant.name).to eq 'Richard'
@@ -235,7 +267,7 @@ describe Fountain::Api::Applicants do
     end
 
     it 'returns updated applicant' do
-      applicant = Fountain::Api::Applicants.update(
+      applicant = described_class.update(
         '01234567-0000-0000-0000-000000000000',
         name: 'Dicky',
         email: 'richard@gmail.com',
@@ -250,7 +282,7 @@ describe Fountain::Api::Applicants do
     end
 
     it 'filters out non-standard arguments' do
-      applicant = Fountain::Api::Applicants.update(
+      applicant = described_class.update(
         '01234567-0000-0000-0000-000000000001',
         name: 'Franky',
         height: '150'
@@ -261,7 +293,7 @@ describe Fountain::Api::Applicants do
 
     it 'raises a not found error if ID was not found' do
       expect do
-        Fountain::Api::Applicants.update('1234', name: 'Franky')
+        described_class.update('1234', name: 'Franky')
       end.to raise_error Fountain::NotFoundError
     end
   end
@@ -294,7 +326,7 @@ describe Fountain::Api::Applicants do
     end
 
     it 'returns the document' do
-      documents = Fountain::Api::Applicants.get_secure_documents('01234567-0000-0000-0000-000000000000')
+      documents = described_class.get_secure_documents('01234567-0000-0000-0000-000000000000')
       expect(documents).to be_an Array
       expect(documents.map(&:class)).to eq [Fountain::SecureDocument]
       expect(documents.map(&:id)).to eq ['a71d7cf4-2d9d-4d4b-82ef-8894bbe78120']
@@ -318,14 +350,14 @@ describe Fountain::Api::Applicants do
     end
 
     it 'advances an applicant' do
-      result = Fountain::Api::Applicants.advance_applicant(
+      result = described_class.advance_applicant(
         '01234567-0000-0000-0000-000000000000'
       )
       expect(result).to eq true
     end
 
     it 'advances an applicant to a specific stage (ignoring non-standard arguments)' do
-      result = Fountain::Api::Applicants.advance_applicant(
+      result = described_class.advance_applicant(
         '01234567-0000-0000-0000-000000000001',
         skip_automated_actions: true,
         stage_id: 'stage-id',
@@ -358,7 +390,7 @@ describe Fountain::Api::Applicants do
     end
 
     it 'returns the booked slots' do
-      sessions = Fountain::Api::Applicants.get_interview_sessions(
+      sessions = described_class.get_interview_sessions(
         '01234567-0000-0000-0000-000000000000'
       )
       expect(sessions).to be_an Array
@@ -385,7 +417,7 @@ describe Fountain::Api::Applicants do
     end
 
     it 'returns the applicants transitions' do
-      transitions = Fountain::Api::Applicants.get_transition_history(
+      transitions = described_class.get_transition_history(
         '01234567-0000-0000-0000-000000000000'
       )
       expect(transitions).to be_an Array

@@ -10,7 +10,7 @@ describe Fountain::User do
       'id' => 'b32b08ce-4a32-4de7-983a-7e2e521405a2'
     }
   end
-  let(:user) { Fountain::User.new data }
+  let(:user) { described_class.new data }
 
   describe '#id' do
     it { expect(user.id).to eq 'b32b08ce-4a32-4de7-983a-7e2e521405a2' }

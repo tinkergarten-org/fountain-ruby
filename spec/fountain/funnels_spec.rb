@@ -48,7 +48,7 @@ describe Fountain::Funnels do
       last: 3
     }
   end
-  let(:funnels) { Fountain::Funnels.new data }
+  let(:funnels) { described_class.new data }
 
   describe '#current_page' do
     it { expect(funnels.current_page).to eq 2 }
@@ -58,7 +58,7 @@ describe Fountain::Funnels do
     it { expect(funnels.last_page).to eq 3 }
   end
 
-  context 'no pagination returned' do
+  context 'when no pagination returned' do
     let(:pagination) { nil }
 
     describe '#current_page' do

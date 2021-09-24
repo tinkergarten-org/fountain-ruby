@@ -26,7 +26,7 @@ describe Fountain::Applicants do
       next_cursor: 'cursor2'
     }
   end
-  let(:applicants) { Fountain::Applicants.new data }
+  let(:applicants) { described_class.new data }
 
   describe '#current_cursor' do
     it { expect(applicants.current_cursor).to eq 'cursor1' }
@@ -36,7 +36,7 @@ describe Fountain::Applicants do
     it { expect(applicants.next_cursor).to eq 'cursor2' }
   end
 
-  context 'no pagination returned' do
+  context 'when no pagination returned' do
     let(:pagination) { nil }
 
     describe '#current_cursor' do

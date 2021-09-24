@@ -15,7 +15,7 @@ describe Fountain::Slot do
     }
   end
 
-  let(:slot) { Fountain::Slot.new data }
+  let(:slot) { described_class.new data }
 
   describe '#id' do
     it { expect(slot.id).to eq '21d7d019-7940-44d1-a710-0a79dd71cfcd' }

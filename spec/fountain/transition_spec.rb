@@ -9,7 +9,7 @@ describe Fountain::Transition do
       'created_at' => '2016-12-12T13:24:44.381-08:00'
     }
   end
-  let(:transition) { Fountain::Transition.new data }
+  let(:transition) { described_class.new data }
 
   describe '#stage_title' do
     it { expect(transition.stage_title).to eq 'Approved' }

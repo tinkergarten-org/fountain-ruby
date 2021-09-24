@@ -20,7 +20,7 @@ RSpec::Matchers.define :delegate_method do |method|
     rescue NoMethodError
       raise "#{@delegator} does not respond to #{@to}!"
     end
-    allow(@delegator).to receive(@to).and_return double('receiver')
+    allow(@delegator).to receive(@to).and_return double('receiver') # rubocop:disable RSpec/VerifiedDoubles
     allow(@delegator.send(@to)).to receive(method).and_return :called
     @delegator.send(@method) == :called
   end
