@@ -3,6 +3,10 @@
 ## Unreleased
 - None
 
+## [0.0.13](releases/tag/v0.0.13) - 2021-09-24
+### Fixed
+- [#3] Update applicants and notes APIs to use *new* expected return statuses from create actions
+
 ## [0.0.12](releases/tag/v0.0.12) - 2020-03-01
 ### Fixed
 - Address CVE-2020-8130 - `rake` OS command injection vulnerability
