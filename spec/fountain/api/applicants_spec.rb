@@ -194,7 +194,7 @@ describe Fountain::Api::Applicants do
 
     it 'deletes the applicant' do
       result = described_class.delete('01234567-0000-0000-0000-000000000000')
-      expect(result).to eq true
+      expect(result).to be true
     end
   end
 
@@ -353,7 +353,7 @@ describe Fountain::Api::Applicants do
       result = described_class.advance_applicant(
         '01234567-0000-0000-0000-000000000000'
       )
-      expect(result).to eq true
+      expect(result).to be true
     end
 
     it 'advances an applicant to a specific stage (ignoring non-standard arguments)' do
@@ -363,7 +363,7 @@ describe Fountain::Api::Applicants do
         stage_id: 'stage-id',
         invalid_arg: 'should not be included'
       )
-      expect(result).to eq true
+      expect(result).to be true
     end
   end
 

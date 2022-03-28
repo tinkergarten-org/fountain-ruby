@@ -121,7 +121,7 @@ describe Fountain::Api::AvailableSlots do
       result = described_class.cancel(
         '22222222-0000-0000-0000-000000000000'
       )
-      expect(result).to eq true
+      expect(result).to be true
     end
   end
 end

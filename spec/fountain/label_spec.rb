@@ -16,6 +16,6 @@ describe Fountain::Label do
   end
 
   describe '#completed' do
-    it { expect(label.completed).to eq true }
+    it { expect(label.completed).to be true }
   end
 end

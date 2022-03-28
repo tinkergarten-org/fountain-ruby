@@ -110,7 +110,7 @@ describe Fountain::Api::Notes do
         '01234567-0000-0000-0000-000000000000',
         '11111111-0000-0000-0000-000000000000'
       )
-      expect(result).to eq true
+      expect(result).to be true
     end
   end
 
