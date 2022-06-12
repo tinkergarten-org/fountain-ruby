@@ -19,6 +19,15 @@ module Fountain
       end
 
       #
+      # Get Funnel Info
+      # @param [String] funnel_id ID of the Fountain funnel
+      # @return [Fountain::Funnel]
+      def self.get(funnel_id)
+        response = request_json("/v2/funnels/#{funnel_id}")
+        Fountain::Funnel.new response
+      end
+
+      #
       # Update Funnel
       # @param [String] funnel_id ID of the Fountain funnel
       # @param [Hash] update_options A hash of options when updating a funnel

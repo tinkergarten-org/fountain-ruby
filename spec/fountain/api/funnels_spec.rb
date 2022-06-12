@@ -84,6 +84,26 @@ describe Fountain::Api::Funnels do
     end
   end
 
+  describe '.get' do
+    let(:funnel_id) { '49dbf2f3-057f-44b4-a638-8fac5aac2adf' }
+
+    before do
+      # Stubs for /v2/funnels/:funnel_id REST API
+      stub_authed_request(:get, "/v2/funnels/#{funnel_id}")
+        .to_return(
+          body: funnel1.to_json,
+          status: 200
+        )
+    end
+
+    it 'returns the funnel' do
+      funnel = described_class.get(funnel_id)
+      expect(funnel).to be_a Fountain::Funnel
+      expect(funnel.id).to eq funnel_id
+      expect(funnel.title).to eq 'My Public Funnel'
+    end
+  end
+
   describe '.update' do
     before do
       # Stubs for /v2/funnels/:id REST API
