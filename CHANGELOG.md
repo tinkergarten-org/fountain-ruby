@@ -3,6 +3,10 @@
 ## Unreleased
 - None
 
+## [0.0.14](releases/tag/v0.0.14) - 2022-06-12
+### Fixed
+- [#5] Add get funnel and get stage to API ([@noahkconley][])
+
 ## [0.0.13](releases/tag/v0.0.13) - 2021-09-24
 ### Fixed
 - [#3] Update applicants and notes APIs to use *new* expected return statuses from create actions
@@ -59,3 +63,5 @@
 ## [0.0.2](releases/tag/v0.0.2) - 2018-03-19
 ### Added
 - Support for applicant list and update
+
+[@noahkconley]: https://github.com/noahkconley
