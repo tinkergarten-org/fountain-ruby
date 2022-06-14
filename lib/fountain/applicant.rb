@@ -90,11 +90,6 @@ module Fountain
       raw_data['data']
     end
 
-    # Secure data
-    def secure_data
-      raw_data['secure_data']
-    end
-
     # Addresses
     def addresses
       raw_data['addresses']
