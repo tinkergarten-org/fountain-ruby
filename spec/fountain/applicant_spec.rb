@@ -7,7 +7,9 @@ describe Fountain::Applicant do
     {
       'id' => '01234567-0000-0000-0000-000000000000',
       'email' => 'rich@gmail.com',
-      'name' => 'Richard',
+      'name' => 'Richard Irving',
+      'first_name' => 'Richard',
+      'last_name' => 'Irving',
       'phone_number' => '79224568246',
       'normalized_phone_number' => '+179224568246',
       'is_duplicate' => false,
@@ -91,7 +93,15 @@ describe Fountain::Applicant do
   end
 
   describe '#name' do
-    it { expect(applicant.name).to eq 'Richard' }
+    it { expect(applicant.name).to eq 'Richard Irving' }
+  end
+
+  describe '#first_name' do
+    it { expect(applicant.first_name).to eq 'Richard' }
+  end
+
+  describe '#last_name' do
+    it { expect(applicant.last_name).to eq 'Irving' }
   end
 
   describe '#phone_number' do

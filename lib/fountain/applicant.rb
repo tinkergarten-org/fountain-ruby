@@ -45,6 +45,16 @@ module Fountain
       raw_data['name']
     end
 
+    # First name
+    def first_name
+      raw_data['first_name']
+    end
+
+    # Last name
+    def last_name
+      raw_data['last_name']
+    end
+
     # Phone number
     def phone_number
       raw_data['phone_number']
