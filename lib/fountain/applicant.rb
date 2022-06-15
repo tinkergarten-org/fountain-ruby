@@ -25,6 +25,16 @@ module Fountain
       Time.parse raw_data['created_at']
     end
 
+    # Updated at
+    def updated_at
+      Time.parse raw_data['updated_at']
+    end
+
+    # Last transitioned at
+    def last_transitioned_at
+      Time.parse raw_data['last_transitioned_at']
+    end
+
     # Email
     def email
       raw_data['email']
@@ -40,9 +50,49 @@ module Fountain
       raw_data['phone_number']
     end
 
+    # Normalized phone number
+    def normalized_phone_number
+      raw_data['normalized_phone_number']
+    end
+
+    # Is duplicate
+    def duplicate?
+      raw_data['is_duplicate']
+    end
+
+    # Receive automated emails
+    def receive_automated_emails?
+      raw_data['receive_automated_emails']
+    end
+
+    # Can receive sms
+    def can_receive_sms?
+      raw_data['can_receive_sms']
+    end
+
+    # Phone platform
+    def phone_platform
+      raw_data['phone_platform']
+    end
+
+    # Rejection reason
+    def rejection_reason
+      raw_data['rejection_reason']
+    end
+
+    # On hold reason
+    def on_hold_reason
+      raw_data['on_hold_reason']
+    end
+
     # data
     def data
       raw_data['data']
+    end
+
+    # Addresses
+    def addresses
+      raw_data['addresses']
     end
 
     # Funnel

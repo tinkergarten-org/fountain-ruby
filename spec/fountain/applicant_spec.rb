@@ -9,10 +9,19 @@ describe Fountain::Applicant do
       'email' => 'rich@gmail.com',
       'name' => 'Richard',
       'phone_number' => '79224568246',
+      'normalized_phone_number' => '+179224568246',
+      'is_duplicate' => false,
+      'receive_automated_emails' => true,
+      'can_receive_sms' => true,
+      'phone_platform' => 'sms',
+      'rejection_reason' => 'not qualified enough',
+      'on_hold_reason' => 'not a good fit',
       'data' => {
         'color_of_eyes' => 'brown'
       },
       'created_at' => '2015-06-05T05:53:38.974-07:00',
+      'updated_at' => '2015-06-05T06:03:49.437-07:00',
+      'last_transitioned_at' => '2015-06-07T12:34:10.321-07:00',
       'funnel' => {
         'id' => '1f62e031-46b2-4cc6-92da-400182d2c88b',
         'title' => 'Future Factors Representative',
@@ -22,6 +31,18 @@ describe Fountain::Applicant do
         'id' => '274d2929-e1d3-4535-b1b6-b5e4fc820f21',
         'title' => 'Approved'
       },
+      'addresses' => [
+        {
+          'street_name' => '11718 Selkirk Drive',
+          'address_2' => 'Apartment 101',
+          'city' => 'Austin',
+          'state' => 'Texas',
+          'zipcode' => 78756, # rubocop:disable Style/NumericLiterals
+          'country' => 'US',
+          'latitude' => 60,
+          'longitude' => 128
+        }
+      ],
       'background_checks' => [
         {
           'title' => 'Driver license check',
@@ -57,6 +78,14 @@ describe Fountain::Applicant do
     it { expect(applicant.created_at).to be_within(0.001).of Time.new(2015, 6, 5, 5, 53, 38.974, '-07:00') }
   end
 
+  describe '#updated_at' do
+    it { expect(applicant.updated_at).to be_within(0.001).of Time.new(2015, 6, 5, 6, 3, 49.437, '-07:00') }
+  end
+
+  describe '#last_transitioned_at' do
+    it { expect(applicant.last_transitioned_at).to be_within(0.001).of Time.new(2015, 6, 7, 12, 34, 10.321, '-07:00') }
+  end
+
   describe '#email' do
     it { expect(applicant.email).to eq 'rich@gmail.com' }
   end
@@ -69,8 +98,55 @@ describe Fountain::Applicant do
     it { expect(applicant.phone_number).to eq '79224568246' }
   end
 
+  describe '#normalized_phone_number' do
+    it { expect(applicant.normalized_phone_number).to eq '+179224568246' }
+  end
+
+  describe '#duplicate?' do
+    it { expect(applicant.duplicate?).to be(false) }
+  end
+
+  describe '#receive_automated_emails?' do
+    it { expect(applicant.receive_automated_emails?).to be(true) }
+  end
+
+  describe '#can_receive_sms?' do
+    it { expect(applicant.can_receive_sms?).to be(true) }
+  end
+
+  describe '#phone_platform' do
+    it { expect(applicant.phone_platform).to eq('sms') }
+  end
+
+  describe '#rejection_reason' do
+    it { expect(applicant.rejection_reason).to eq('not qualified enough') }
+  end
+
+  describe '#on_hold_reason' do
+    it { expect(applicant.on_hold_reason).to eq('not a good fit') }
+  end
+
   describe '#data' do
     it { expect(applicant.data).to eq('color_of_eyes' => 'brown') }
+  end
+
+  describe '#addresses' do
+    it do
+      expect(applicant.addresses).to eq(
+        [
+          {
+            'street_name' => '11718 Selkirk Drive',
+            'address_2' => 'Apartment 101',
+            'city' => 'Austin',
+            'state' => 'Texas',
+            'zipcode' => 78756, # rubocop:disable Style/NumericLiterals
+            'country' => 'US',
+            'latitude' => 60,
+            'longitude' => 128
+          }
+        ]
+      )
+    end
   end
 
   describe '#funnel' do
