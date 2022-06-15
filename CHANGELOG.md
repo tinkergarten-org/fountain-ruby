@@ -3,9 +3,13 @@
 ## Unreleased
 - None
 
+## [0.0.15](releases/tag/v0.0.15) - 2022-06-15
+### Added
+- [#6] Additional accessor methods to the Applicant class ([@noahkconley][])
+
 ## [0.0.14](releases/tag/v0.0.14) - 2022-06-12
-### Fixed
-- [#5] Add get funnel and get stage to API ([@noahkconley][])
+### Added
+- [#5] Get funnel and get stage to API ([@noahkconley][])
 
 ## [0.0.13](releases/tag/v0.0.13) - 2021-09-24
 ### Fixed
